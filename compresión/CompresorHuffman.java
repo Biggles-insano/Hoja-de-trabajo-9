@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class CompresorHuffman {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingresa el texto a comprimir:");
+        System.out.println("Ingrese el texto a comprimir:");
         String texto = scanner.nextLine();
         scanner.close();
 
@@ -27,11 +27,27 @@ public class CompresorHuffman {
         }
 
         Arbol arbol = new Arbol(colaPrioridad.poll());
+
+        // Imprimir el árbol de Huffman
+        System.out.println("Árbol de Huffman:");
+        arbol.imprimirArbol();
+
         HashMap<Character, String> codigos = new HashMap<>();
-        arbol.raiz.generarCodigos(codigos, "");
+        arbol.generarCodigos(codigos, "");
 
         for (char c : codigos.keySet()) {
             System.out.println("Caracter: " + c + " Código: " + codigos.get(c));
         }
+
+        // Calcular el tamaño del texto comprimido
+        int tamañoTextoOriginal = texto.length() * 8; // Cada caracter es un byte (8 bits)
+        int tamañoTextoComprimido = 0;
+        for (char c : texto.toCharArray()) {
+            tamañoTextoComprimido += codigos.get(c).length();
+        }
+
+        // Calcular el ratio de compresión
+        double ratio = (double) tamañoTextoComprimido / tamañoTextoOriginal;
+        System.out.println("Ratio de compresión: " + ratio);
     }
 }
